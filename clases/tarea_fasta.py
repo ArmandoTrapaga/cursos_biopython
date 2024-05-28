@@ -21,11 +21,16 @@ for i in range(1):
             file_forward.write(">{}\n".format(seq_record.id))
             seq_str_forward = str(seq_record.seq)
             for codon in re.findall(r"(.{3})", seq_str_forward[i:]):  # Modificación aquí: Usamos [1:] para empezar desde el segundo carácter
-                file_forward.write(codon + " ")        
+                file_forward.write(codon + " ")
+            file_forward.write("\n")      
 '''
 for i in range(3):
     print(f"Marco {i+4}")
     with open(f"Frame {i + 4}", "w") as file_reverse:
+        for seq_record in SeqIO.parse(archivo_seq, "fasta"):
+            file_reverse.write(">{}\n".format(seq_record.id))
+            seq_str_forward = str(seq_record.seq)
+            seq_str_reverse = seq_str_forward[::-1]
         for codon in re.findall(r"(.{3})", seq_str_reverse[i:]):  # Modificación aquí: Usamos [1:] para empezar desde el segundo carácter
             file_reverse.write(codon + "\t")
 '''
