@@ -58,29 +58,31 @@ args = parser.parse_args()
 archivo_seq = args.input_file
 #archivo_seq = "C:/Users/phoen/OneDrive/Escritorio/cursos_biopython/data/seq.nt.fa"
 def crear_frames(archivo):
-    for i in range(3):
-        #Se establece el titulo i + 1 
-        with open(f"Frame {i+1}", "w") as file_forward:
-            for seq_record in SeqIO.parse(archivo, "fasta"):
-                #Conseguimos el ID de la secuencia 
-                file_forward.write(">{}\n".format(seq_record.id))
-                #Volvemos cadena a la secuencia
-                seq_str_forward = str(seq_record.seq)
-                for codon in re.findall(r"(.{3})", seq_str_forward[i:]): 
-                    #Escribimos el codon en el archivo separados por un espacio
-                    file_forward.write(codon + " ")
-                file_forward.write("\n")      
-    #Mismo proceso para la cadena invertida
-    for i in range(3):
-        with open(f"Frame {i + 4}", "w") as file_reverse:
-            for seq_record in SeqIO.parse(archivo, "fasta"):
-                file_reverse.write(">{}\n".format(seq_record.id))
-                seq_str_forward = str(seq_record.seq)
-                seq_str_reverse = seq_str_forward[::-1]
-                for codon in re.findall(r"(.{3})", seq_str_reverse[i:]): 
-                    file_reverse.write(codon + " ")
-                file_reverse.write("\n")
-
+    try:
+        for i in range(3):
+            #Se establece el titulo i + 1 
+            with open(f"Frame {i+1}", "w") as file_forward:
+                for seq_record in SeqIO.parse(archivo, "fasta"):
+                    #Conseguimos el ID de la secuencia 
+                    file_forward.write(">{}\n".format(seq_record.id))
+                    #Volvemos cadena a la secuencia
+                    seq_str_forward = str(seq_record.seq)
+                    for codon in re.findall(r"(.{3})", seq_str_forward[i:]): 
+                        #Escribimos el codon en el archivo separados por un espacio
+                        file_forward.write(codon + " ")
+                    file_forward.write("\n")      
+        #Mismo proceso para la cadena invertida
+        for i in range(3):
+            with open(f"Frame {i + 4}", "w") as file_reverse:
+                for seq_record in SeqIO.parse(archivo, "fasta"):
+                    file_reverse.write(">{}\n".format(seq_record.id))
+                    seq_str_forward = str(seq_record.seq)
+                    seq_str_reverse = seq_str_forward[::-1]
+                    for codon in re.findall(r"(.{3})", seq_str_reverse[i:]): 
+                        file_reverse.write(codon + " ")
+                    file_reverse.write("\n")
+    except IOError:
+        print("IOERROR: No se pudo abrir el archivo. Por favor, asegúrate de que el archivo existe y que has proporcionado la ruta correcta.")
 
 #=========================================================================
 #============================Main=========================================
